@@ -5,7 +5,7 @@ public class LSystemGenerator : MonoBehaviour
 {
     [SerializeField] Rule[] rules;
     [SerializeField] string rootSentence;
-    [SerializeField] [Range(0, 100)] int iterationLimit;
+    [SerializeField] [Range(0, 50)] int iterationLimit;
     [SerializeField] [Range(0, 1)] float chanceToIgnoreRule = 0.3f;
     [SerializeField] int maxTotalLength = 10000;
 

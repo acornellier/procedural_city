@@ -4,6 +4,7 @@ public enum EncodingLetters
     Save = '[',
     Load = ']',
     Draw = 'F',
+    DrawLong = 'L',
     TurnLeft = '-',
     TurnRight = '+'
 }

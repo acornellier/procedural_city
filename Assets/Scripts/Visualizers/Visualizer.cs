@@ -50,7 +50,9 @@ public abstract class Visualizer : MonoBehaviour
                     direction = agentParameter.direction;
                     break;
                 case EncodingLetters.Draw:
+                case EncodingLetters.DrawLong:
                     length = Random.Range(lengths.x, lengths.y);
+                    if (encoding == EncodingLetters.DrawLong) length *= 4;
                     var endPosition = currentPosition + direction * length;
                     roadNetwork.AddRoad(currentPosition, direction, length);
                     currentPosition = endPosition;
