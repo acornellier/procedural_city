@@ -4,10 +4,10 @@
 public class Rule : ScriptableObject
 {
     public string letter;
-    public string[] results;
+    [SerializeField] string[] results;
 
     public string GetResult()
     {
-        return results[0];
+        return results[Random.Range(0, results.Length)];
     }
 }

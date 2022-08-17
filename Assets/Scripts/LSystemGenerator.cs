@@ -5,11 +5,15 @@ public class LSystemGenerator : MonoBehaviour
 {
     [SerializeField] Rule[] rules;
     [SerializeField] string rootSentence;
+    [SerializeField] [Range(0, 100)] int iterationLimit;
+    [SerializeField] [Range(0, 1)] float chanceToIgnoreRule = 0.3f;
+    [SerializeField] int maxTotalLength = 10000;
 
-    [SerializeField] [Range(0, 10)] public int iterationLimit;
+    int _totalLength = 0;
 
     public string GenerateSentence(string word = null)
     {
+        _totalLength = 0;
         word ??= rootSentence;
 
         return GrowRecursive(word);
@@ -23,6 +27,10 @@ public class LSystemGenerator : MonoBehaviour
         var newWord = new StringBuilder();
         foreach (var c in word)
         {
+            _totalLength += 1;
+            if (_totalLength >= maxTotalLength)
+                break;
+
             newWord.Append(c);
             ProcessRulesRecursively(newWord, c, iterationIndex);
         }
@@ -34,7 +42,8 @@ public class LSystemGenerator : MonoBehaviour
     {
         foreach (var rule in rules)
         {
-            if (rule.letter == c.ToString())
+            if (rule.letter == c.ToString() &&
+                (chanceToIgnoreRule == 0 || iterationIndex <= 1 || Random.value > chanceToIgnoreRule))
                 newWord.Append(GrowRecursive(rule.GetResult(), iterationIndex + 1));
         }
     }

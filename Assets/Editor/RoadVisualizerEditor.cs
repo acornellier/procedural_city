@@ -1,8 +1,8 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(SimpleVisualizer))]
-public class SimpleVisualizerEditor : VisualizerEditor
+[CustomEditor(typeof(RoadVisualizer))]
+public class RoadVisualizerEditor : VisualizerEditor
 {
     public override void OnInspectorGUI()
     {
