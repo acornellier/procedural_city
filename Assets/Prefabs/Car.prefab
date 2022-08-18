@@ -35,7 +35,7 @@ Transform:
   m_Children:
   - {fileID: 6734157353520002699}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1372173101717435906
 SpriteRenderer:
@@ -167,10 +167,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _carController: {fileID: 5766086568317784001}
-  _arriveDistance: 0.3
+  _arriveDistance: 0.2
   _lastPointArriveDistance: 0.1
-  _turningAngleOffset: 5
-  _path: []
+  _steeringStrength: 45
+  _steeringEpsilon: 1
+  _path:
+  - {x: 0.08, y: 0}
+  - {x: 0.08, y: 1}
+  - {x: 0.08, y: 2}
+  - {x: 0.08, y: 2.08}
+  - {x: 0, y: 2.08}
+  - {x: -1, y: 2.08}
+  - {x: -2, y: 2.08}
+  - {x: -2.08, y: 1}
+  - {x: -2.08, y: 0}
+  - {x: -1, y: -0.08}
+  - {x: 0, y: -0.08}
   _pathIndex: 0
   _stopped: 0
 --- !u!1 &8200734126741629519
