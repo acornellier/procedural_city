@@ -15,6 +15,8 @@ public class CarAi : MonoBehaviour
     [ReadOnly] [SerializeField] int _pathIndex;
     [ReadOnly] [SerializeField] bool _stopped;
 
+    CarAiDirector _director;
+
     void Awake()
     {
         _stopped = true;
@@ -22,31 +24,41 @@ public class CarAi : MonoBehaviour
 
     void Update()
     {
-        if (_stopped && _path.Count > 1) StartPath();
+        if (_stopped && _director != null) GetNewPath();
 
         CheckIfArrived();
         Drive();
     }
 
-    void StartPath()
-    {
-        _pathIndex = 0;
-        _stopped = false;
-    }
-
     void OnDrawGizmos()
     {
-        foreach (var point in _path)
+        Gizmos.color = Color.magenta;
+        for (var i = 0; i < _path.Count; ++i)
         {
-            Gizmos.DrawSphere(point, .05f);
+            Gizmos.DrawSphere(_path[i], .05f);
+            if (i < _path.Count - 1)
+                Gizmos.DrawLine(_path[i], _path[i + 1]);
         }
+    }
+
+    public void SetDirector(CarAiDirector director)
+    {
+        _director = director;
+    }
+
+    void GetNewPath()
+    {
+        _path = _director.GetRandomPath(transform.position);
+        _pathIndex = 0;
+        _stopped = false;
     }
 
     void CheckIfArrived()
     {
         if (_stopped) return;
 
-        var distanceToCheck = _pathIndex == _path.Count - 1 ? _lastPointArriveDistance : _arriveDistance;
+        var distanceToCheck =
+            _pathIndex == _path.Count - 1 ? _lastPointArriveDistance : _arriveDistance;
         var distanceFromPoint = Vector2.Distance(transform.position, _path[_pathIndex]);
         if (distanceFromPoint < distanceToCheck)
             SetNextTargetIndex();
@@ -71,7 +83,9 @@ public class CarAi : MonoBehaviour
 
         var direction = (Vector3)_path[_pathIndex] - transform.position;
         var angleDiff = Vector2.SignedAngle(transform.up, direction);
-        var turnInput = Mathf.Abs(angleDiff) < _steeringEpsilon ? 0 : -angleDiff / _steeringStrength;
+        var turnInput = Mathf.Abs(angleDiff) < _steeringEpsilon
+            ? 0
+            : -angleDiff / _steeringStrength;
         _carController.SetInput(turnInput, 1);
     }
 }

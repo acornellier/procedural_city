@@ -9,13 +9,17 @@ public class RoadVisualizer : Visualizer
     [SerializeField] Roads _roads;
     [SerializeField] GameObject _house;
     [SerializeField] GameObject _grass;
+    [SerializeField] CarAi _car;
 
-    readonly Vector2Int[] _directions = { Vector2Int.up, Vector2Int.right, Vector2Int.left, Vector2Int.down };
+    readonly Vector2Int[] _directions =
+        { Vector2Int.up, Vector2Int.right, Vector2Int.left, Vector2Int.down, };
 
-    Dictionary<Vector2Int, GameObject> _tiles;
+    CarAiDirector _carAiDirector;
+
     BoundsInt _bounds;
     Transform _grassParent;
     Transform _roadParent;
+    Dictionary<Vector2Int, Road> _roadMap;
 
     public override void Visualize()
     {
@@ -33,11 +37,15 @@ public class RoadVisualizer : Visualizer
         // DrawGrass();
         DrawRoads();
         // DrawHouses(roadPositions);
+
+        _carAiDirector = new CarAiDirector(roadNetwork, _roadMap);
+        var car = Instantiate(_car, Vector3.zero, Quaternion.identity, city.transform);
+        car.SetDirector(_carAiDirector);
     }
 
     void Reset()
     {
-        _tiles = new Dictionary<Vector2Int, GameObject>();
+        _roadMap = new Dictionary<Vector2Int, Road>();
         _bounds = new BoundsInt();
         _grassParent = new GameObject("Grass").transform;
         _grassParent.SetParent(city.transform);
@@ -53,7 +61,7 @@ public class RoadVisualizer : Visualizer
             {
                 var position = new Vector2Int(x, y);
                 var obj = Instantiate(_grass, (Vector2)position, Quaternion.identity, _grassParent);
-                _tiles[position] = obj;
+                // _roadMap[position] = obj;
             }
         }
     }
@@ -64,7 +72,8 @@ public class RoadVisualizer : Visualizer
 
         foreach (var (point, neighbors) in roadNetwork.AdjacencyList)
         {
-            if (neighbors.Count is 0 or >= 5) throw new Exception("Must have between 1 and 4 neighbors");
+            if (neighbors.Count is 0 or >= 5)
+                throw new Exception("Must have between 1 and 4 neighbors");
 
             if (neighbors.Count == 4)
             {
@@ -76,8 +85,10 @@ public class RoadVisualizer : Visualizer
             var right = false;
             var up = false;
             var left = false;
-            foreach (var direction in neighbors.Select(neighbor =>
-                         Vector2Int.RoundToInt(((Vector2)(neighbor - point)).normalized)))
+            foreach (var direction in neighbors.Select(
+                         neighbor =>
+                             Vector2Int.RoundToInt(((Vector2)(neighbor - point)).normalized)
+                     ))
             {
                 if (direction == Vector2Int.down) down = true;
                 else if (direction == Vector2Int.right) right = true;
@@ -123,7 +134,7 @@ public class RoadVisualizer : Visualizer
         }
     }
 
-    void DrawRoad(GameObject road, Vector2Int position, float zAngle, ISet<Vector2Int> visited)
+    void DrawRoad(Road road, Vector2Int position, float zAngle, ISet<Vector2Int> visited)
     {
         if (visited.Contains(position))
             return;
@@ -132,10 +143,10 @@ public class RoadVisualizer : Visualizer
         var obj = Instantiate(road, (Vector2)position, angle, _roadParent);
         visited.Add(position);
 
-        if (_tiles.TryGetValue(position, out var tile))
+        if (_roadMap.TryGetValue(position, out var tile))
             DestroyImmediate(tile);
 
-        _tiles[position] = obj;
+        _roadMap[position] = obj;
     }
 
     void DrawHouses(ICollection<Vector2Int> roadPositions)
@@ -163,10 +174,10 @@ public class RoadVisualizer : Visualizer
     [Serializable]
     class Roads
     {
-        public GameObject _straight;
-        public GameObject _deadEnd;
-        public GameObject _corner;
-        public GameObject _threeWay;
-        public GameObject _fourWay;
+        public Road _straight;
+        public Road _deadEnd;
+        public Road _corner;
+        public Road _threeWay;
+        public Road _fourWay;
     }
 }

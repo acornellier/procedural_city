@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 public class Marker : MonoBehaviour
 {
     [SerializeField] bool _openForConnections;
-    [SerializeField] List<Marker> _neighbors;
+    [SerializeField] Marker[] _neighbors;
+
+    public Marker[] Neighbors => _neighbors;
 
     void OnDrawGizmos()
     {

@@ -435,10 +435,10 @@ MonoBehaviour:
   _lSystem: {fileID: 936126518}
   _lengths: {x: 1, y: 3}
   _roads:
-    _straight: {fileID: 4501703277022297217, guid: 7ea76dafa4a45e24ebf1a903d46a71d8, type: 3}
-    _deadEnd: {fileID: 8432545036043723073, guid: 49fb7c98c47104c50b47e680fec2d753, type: 3}
-    _corner: {fileID: 973060120492060782, guid: 1f03fa529408ba54e8ed4e09e6384e1d, type: 3}
-    _threeWay: {fileID: 5698438313078429470, guid: 8ad24528dfdb2864799c18c0da5ddd1f, type: 3}
-    _fourWay: {fileID: 2666396318594731038, guid: b98ec73d282e08c418631cf2e53cbe97, type: 3}
+    _straight: {fileID: 852569794182527358, guid: 7ea76dafa4a45e24ebf1a903d46a71d8, type: 3}
+    _deadEnd: {fileID: 4660038116378453182, guid: 49fb7c98c47104c50b47e680fec2d753, type: 3}
+    _corner: {fileID: 4047801430132471185, guid: 1f03fa529408ba54e8ed4e09e6384e1d, type: 3}
+    _threeWay: {fileID: 8843177985090392801, guid: 8ad24528dfdb2864799c18c0da5ddd1f, type: 3}
+    _fourWay: {fileID: 1201719623517833697, guid: b98ec73d282e08c418631cf2e53cbe97, type: 3}
   _house: {fileID: 714356044909468182, guid: 79f37c596e80240e1a3ce3e7d4d889f8, type: 3}
   _grass: {fileID: 1691805843578977363, guid: 2abc1d527e0ae4012a27210fc1cde506, type: 3}

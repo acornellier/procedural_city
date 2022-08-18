@@ -13,7 +13,7 @@ public abstract class Visualizer : MonoBehaviour
 
     const float _angle = 90;
     protected GameObject city;
-    protected readonly RoadNetwork roadNetwork = new();
+    protected readonly AdjacencyGraph<Vector2Int> roadNetwork = new();
 
     public abstract void Visualize();
 
@@ -38,7 +38,7 @@ public abstract class Visualizer : MonoBehaviour
                 case EncodingLetters.Save:
                     savePoints.Push(
                         new AgentParameters
-                            { position = currentPosition, direction = direction, length = length }
+                            { position = currentPosition, direction = direction, length = length, }
                     );
                     break;
                 case EncodingLetters.Load:
@@ -53,14 +53,20 @@ public abstract class Visualizer : MonoBehaviour
                 case EncodingLetters.DrawLong:
                     length = Random.Range(_lengths.x, _lengths.y);
                     if (encoding == EncodingLetters.DrawLong) length *= 4;
-                    var endPosition = currentPosition + direction * length;
-                    roadNetwork.AddRoad(currentPosition, direction, length);
-                    currentPosition = endPosition;
+
+                    for (var i = 0; i < length; ++i)
+                    {
+                        var end = currentPosition + direction;
+                        roadNetwork.AddUndirectedEdge(currentPosition, end);
+                        currentPosition = end;
+                    }
+
                     break;
                 case EncodingLetters.TurnLeft:
                 case EncodingLetters.TurnRight:
                     var rotatedAngle = encoding == EncodingLetters.TurnLeft ? _angle : -_angle;
-                    var newDirection = Quaternion.AngleAxis(rotatedAngle, Vector3.forward) * (Vector2)direction;
+                    var newDirection = Quaternion.AngleAxis(rotatedAngle, Vector3.forward) *
+                                       (Vector2)direction;
                     direction = Vector2Int.RoundToInt(newDirection);
                     break;
                 case EncodingLetters.Unknown:
