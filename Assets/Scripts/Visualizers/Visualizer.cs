@@ -6,8 +6,8 @@ using Random = UnityEngine.Random;
 
 public abstract class Visualizer : MonoBehaviour
 {
-    [SerializeField] LSystemGenerator lSystem;
-    [SerializeField] Vector2Int lengths = new(1, 3);
+    [SerializeField] LSystemGenerator _lSystem;
+    [SerializeField] Vector2Int _lengths = new(1, 3);
 
     [NonSerialized] public int seed;
 
@@ -24,7 +24,7 @@ public abstract class Visualizer : MonoBehaviour
         city = new GameObject("City");
         roadNetwork.Clear();
 
-        var sequence = lSystem.GenerateSentence();
+        var sequence = _lSystem.GenerateSentence();
 
         var savePoints = new Stack<AgentParameters>();
         var currentPosition = Vector2Int.zero;
@@ -51,7 +51,7 @@ public abstract class Visualizer : MonoBehaviour
                     break;
                 case EncodingLetters.Draw:
                 case EncodingLetters.DrawLong:
-                    length = Random.Range(lengths.x, lengths.y);
+                    length = Random.Range(_lengths.x, _lengths.y);
                     if (encoding == EncodingLetters.DrawLong) length *= 4;
                     var endPosition = currentPosition + direction * length;
                     roadNetwork.AddRoad(currentPosition, direction, length);

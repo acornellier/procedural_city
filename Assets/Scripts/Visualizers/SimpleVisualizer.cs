@@ -6,8 +6,8 @@ using Random = UnityEngine.Random;
 
 public class SimpleVisualizer : Visualizer
 {
-    [SerializeField] GameObject prefab;
-    [SerializeField] Material lineMaterial;
+    [SerializeField] GameObject _prefab;
+    [SerializeField] Material _lineMaterial;
 
     public override void Visualize()
     {
@@ -27,7 +27,7 @@ public class SimpleVisualizer : Visualizer
         var line = new GameObject("line")
             { transform = { parent = city.transform, position = startPosition } };
         var lineRenderer = line.AddComponent<LineRenderer>();
-        lineRenderer.material = lineMaterial;
+        lineRenderer.material = _lineMaterial;
         lineRenderer.startColor = Color.red;
         lineRenderer.endColor = Color.red;
         lineRenderer.startWidth = 0.3f;
@@ -38,6 +38,6 @@ public class SimpleVisualizer : Visualizer
 
     void DrawPosition(Vector2 position)
     {
-        Instantiate(prefab, position, Quaternion.identity, city.transform);
+        Instantiate(_prefab, position, Quaternion.identity, city.transform);
     }
 }

@@ -6,28 +6,69 @@ using Random = UnityEngine.Random;
 
 public class RoadVisualizer : Visualizer
 {
-    [SerializeField] Roads roads;
-    [SerializeField] GameObject house;
+    [SerializeField] Roads _roads;
+    [SerializeField] GameObject _house;
+    [SerializeField] GameObject _grass;
 
     readonly Vector2Int[] _directions = { Vector2Int.up, Vector2Int.right, Vector2Int.left, Vector2Int.down };
+
+    Dictionary<Vector2Int, GameObject> _tiles;
+    BoundsInt _bounds;
+    Transform _grassParent;
+    Transform _roadParent;
 
     public override void Visualize()
     {
         BuildRoadNetwork();
-        var roadPositions = new HashSet<Vector2Int>();
-        DrawRoads(roadPositions);
-        DrawHouses(roadPositions);
+        Reset();
+
+        foreach (var position in roadNetwork.AdjacencyList.Keys)
+        {
+            if (position.x < _bounds.xMin) _bounds.xMin = position.x - 1;
+            else if (position.x > _bounds.xMax) _bounds.xMax = position.x + 2;
+            if (position.y < _bounds.yMin) _bounds.yMin = position.y - 1;
+            else if (position.y > _bounds.yMax) _bounds.yMax = position.y + 2;
+        }
+
+        // DrawGrass();
+        DrawRoads();
+        // DrawHouses(roadPositions);
     }
 
-    void DrawRoads(ISet<Vector2Int> visited)
+    void Reset()
     {
+        _tiles = new Dictionary<Vector2Int, GameObject>();
+        _bounds = new BoundsInt();
+        _grassParent = new GameObject("Grass").transform;
+        _grassParent.SetParent(city.transform);
+        _roadParent = new GameObject("Roads").transform;
+        _roadParent.SetParent(city.transform);
+    }
+
+    void DrawGrass()
+    {
+        for (var x = _bounds.xMin; x <= _bounds.xMax; ++x)
+        {
+            for (var y = _bounds.yMin; y <= _bounds.yMax; ++y)
+            {
+                var position = new Vector2Int(x, y);
+                var obj = Instantiate(_grass, (Vector2)position, Quaternion.identity, _grassParent);
+                _tiles[position] = obj;
+            }
+        }
+    }
+
+    void DrawRoads()
+    {
+        var visited = new HashSet<Vector2Int>();
+
         foreach (var (point, neighbors) in roadNetwork.AdjacencyList)
         {
             if (neighbors.Count is 0 or >= 5) throw new Exception("Must have between 1 and 4 neighbors");
 
             if (neighbors.Count == 4)
             {
-                DrawRoad(roads.fourWay, point, 0, visited);
+                DrawRoad(_roads._fourWay, point, 0, visited);
                 continue;
             }
 
@@ -50,17 +91,17 @@ public class RoadVisualizer : Visualizer
                     : right ? 90f
                     : up ? 180f
                     : 270f;
-                DrawRoad(roads.deadEnd, point, angle, visited);
+                DrawRoad(_roads._deadEnd, point, angle, visited);
             }
             else if (neighbors.Count == 2)
             {
                 if (down && up)
                 {
-                    DrawRoad(roads.straight, point, 0, visited);
+                    DrawRoad(_roads._straight, point, 0, visited);
                 }
                 else if (right && left)
                 {
-                    DrawRoad(roads.straight, point, 90, visited);
+                    DrawRoad(_roads._straight, point, 90, visited);
                 }
                 else // corner
                 {
@@ -68,7 +109,7 @@ public class RoadVisualizer : Visualizer
                         : right & up ? 90f
                         : up && left ? 180f
                         : 270f;
-                    DrawRoad(roads.corner, point, angle, visited);
+                    DrawRoad(_roads._corner, point, angle, visited);
                 }
             }
             else if (neighbors.Count == 3)
@@ -77,20 +118,24 @@ public class RoadVisualizer : Visualizer
                     : !down ? 90f
                     : !right ? 180f
                     : 270f;
-                DrawRoad(roads.threeWay, point, angle, visited);
+                DrawRoad(_roads._threeWay, point, angle, visited);
             }
         }
     }
 
-    void DrawRoad(Sprite sprite, Vector2Int position, float zAngle, ISet<Vector2Int> visited)
+    void DrawRoad(GameObject road, Vector2Int position, float zAngle, ISet<Vector2Int> visited)
     {
         if (visited.Contains(position))
             return;
 
         var angle = Quaternion.Euler(0, 0, zAngle);
-        var obj = Instantiate(roads.prefab, (Vector2)position, angle, city.transform);
-        obj.GetComponent<SpriteRenderer>().sprite = sprite;
+        var obj = Instantiate(road, (Vector2)position, angle, _roadParent);
         visited.Add(position);
+
+        if (_tiles.TryGetValue(position, out var tile))
+            DestroyImmediate(tile);
+
+        _tiles[position] = obj;
     }
 
     void DrawHouses(ICollection<Vector2Int> roadPositions)
@@ -110,7 +155,7 @@ public class RoadVisualizer : Visualizer
                 houses.Add(position);
                 var zAngle = -Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
                 var angle = Quaternion.Euler(0, 0, zAngle);
-                Instantiate(house, (Vector2)position, angle, city.transform);
+                Instantiate(_house, (Vector2)position, angle, city.transform);
             }
         }
     }
@@ -118,11 +163,10 @@ public class RoadVisualizer : Visualizer
     [Serializable]
     class Roads
     {
-        public GameObject prefab;
-        public Sprite straight;
-        public Sprite deadEnd;
-        public Sprite corner;
-        public Sprite threeWay;
-        public Sprite fourWay;
+        public GameObject _straight;
+        public GameObject _deadEnd;
+        public GameObject _corner;
+        public GameObject _threeWay;
+        public GameObject _fourWay;
     }
 }
