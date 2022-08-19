@@ -6,10 +6,7 @@ using Random = UnityEngine.Random;
 
 public class RoadVisualizer : Visualizer
 {
-    [SerializeField] Roads roads;
-    [SerializeField] GameObject house;
-    [SerializeField] GameObject grass;
-    [SerializeField] CarAi car;
+    [SerializeField] RoadVisualizerSettings settings;
 
     readonly Vector2Int[] _directions =
         { Vector2Int.up, Vector2Int.right, Vector2Int.left, Vector2Int.down, };
@@ -39,8 +36,21 @@ public class RoadVisualizer : Visualizer
         // DrawHouses(roadPositions);
 
         _carAiDirector = new CarAiDirector(roadNetwork, _roadMap);
-        var car = Instantiate(this.car, Vector3.zero, Quaternion.identity, city.transform);
-        car.SetDirector(_carAiDirector);
+    }
+
+    public void SpawnCar()
+    {
+        for (var i = 0; i < 100; ++i)
+        {
+            var position = _roadMap.Keys.ToList()[Random.Range(0, _roadMap.Count)];
+            var car = Instantiate(
+                settings.car,
+                (Vector2)position,
+                Quaternion.identity,
+                city.transform
+            );
+            car.SetDirector(_carAiDirector);
+        }
     }
 
     void Reset()
@@ -60,7 +70,12 @@ public class RoadVisualizer : Visualizer
             for (var y = _bounds.yMin; y <= _bounds.yMax; ++y)
             {
                 var position = new Vector2Int(x, y);
-                var obj = Instantiate(grass, (Vector2)position, Quaternion.identity, _grassParent);
+                var obj = Instantiate(
+                    settings.grass,
+                    (Vector2)position,
+                    Quaternion.identity,
+                    _grassParent
+                );
                 // _roadMap[position] = obj;
             }
         }
@@ -77,7 +92,7 @@ public class RoadVisualizer : Visualizer
 
             if (neighbors.Count == 4)
             {
-                DrawRoad(roads.fourWay, point, 0, visited);
+                DrawRoad(settings.roads.fourWay, point, 0, visited);
                 continue;
             }
 
@@ -102,17 +117,17 @@ public class RoadVisualizer : Visualizer
                     : right ? 90f
                     : up ? 180f
                     : 270f;
-                DrawRoad(roads.deadEnd, point, angle, visited);
+                DrawRoad(settings.roads.deadEnd, point, angle, visited);
             }
             else if (neighbors.Count == 2)
             {
                 if (down && up)
                 {
-                    DrawRoad(roads.straight, point, 0, visited);
+                    DrawRoad(settings.roads.straight, point, 0, visited);
                 }
                 else if (right && left)
                 {
-                    DrawRoad(roads.straight, point, 90, visited);
+                    DrawRoad(settings.roads.straight, point, 90, visited);
                 }
                 else // corner
                 {
@@ -120,7 +135,7 @@ public class RoadVisualizer : Visualizer
                         : right & up ? 90f
                         : up && left ? 180f
                         : 270f;
-                    DrawRoad(roads.corner, point, angle, visited);
+                    DrawRoad(settings.roads.corner, point, angle, visited);
                 }
             }
             else if (neighbors.Count == 3)
@@ -129,7 +144,7 @@ public class RoadVisualizer : Visualizer
                     : !down ? 90f
                     : !right ? 180f
                     : 270f;
-                DrawRoad(roads.threeWay, point, angle, visited);
+                DrawRoad(settings.roads.threeWay, point, angle, visited);
             }
         }
     }
@@ -166,18 +181,8 @@ public class RoadVisualizer : Visualizer
                 houses.Add(position);
                 var zAngle = -Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
                 var angle = Quaternion.Euler(0, 0, zAngle);
-                Instantiate(house, (Vector2)position, angle, city.transform);
+                Instantiate(settings.house, (Vector2)position, angle, city.transform);
             }
         }
-    }
-
-    [Serializable]
-    class Roads
-    {
-        public Road straight;
-        public Road deadEnd;
-        public Road corner;
-        public Road threeWay;
-        public Road fourWay;
     }
 }

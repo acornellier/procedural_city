@@ -11,6 +11,11 @@ public class AdjacencyGraph<T>
         AdjacencyList.Clear();
     }
 
+    public void AddVertex(T vertex)
+    {
+        AdjacencyList.TryAdd(vertex, new HashSet<T>());
+    }
+
     public void AddEdge(T start, T end)
     {
         if (AdjacencyList.TryGetValue(start, out var list))
@@ -56,7 +61,7 @@ public class AdjacencyGraph<T>
             }
         }
 
-        throw new Exception("No path found");
+        throw new Exception($"No path found between {start} and {end}");
     }
 
     static List<T> GeneratePath(IReadOnlyDictionary<T, T> cameFrom, T endState)

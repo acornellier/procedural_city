@@ -6,7 +6,7 @@ public class Road : MonoBehaviour
 {
     Marker[] _carMarkers;
 
-    AdjacencyGraph<Vector2> _adjacencyGraph;
+    AdjacencyGraph<Marker> _adjacencyGraph = new();
 
     void Awake()
     {
@@ -14,24 +14,35 @@ public class Road : MonoBehaviour
 
         foreach (var marker in _carMarkers)
         {
+            _adjacencyGraph.AddVertex(marker);
             foreach (var neighbor in marker.Neighbors)
             {
-                _adjacencyGraph.AddEdge(marker.transform.position, neighbor.transform.position);
+                _adjacencyGraph.AddEdge(marker, neighbor);
             }
         }
     }
 
-    List<Vector2> FindPathToNextRoad(Vector2Int nextRoadPosition)
+    public IEnumerable<Marker> FindPathToNextRoad(Vector2 start, Vector2Int nextRoadPosition)
     {
-        var exitMarker = FindExitNearestToRoad(nextRoadPosition);
-        return new List<Vector2>();
+        var entranceMarker = FindEntranceNearestToPoint(start);
+        var exitMarker = FindExitNearestToPoint(nextRoadPosition);
+        D.Log("Dijkstra", gameObject.name, entranceMarker, exitMarker);
+        return _adjacencyGraph.Dijkstra(entranceMarker, exitMarker);
     }
 
-    Marker FindExitNearestToRoad(Vector2Int roadPosition)
+    public Marker FindEntranceNearestToPoint(Vector2 point)
+    {
+        return _carMarkers
+            .Where(marker => marker.isEntrance)
+            .OrderBy(marker => Vector2.Distance(marker.transform.position, point))
+            .First();
+    }
+
+    Marker FindExitNearestToPoint(Vector2 point)
     {
         return _carMarkers
             .Where(marker => marker.IsExit)
-            .OrderBy(marker => Vector2.Distance(marker.transform.position, roadPosition))
+            .OrderBy(marker => Vector2.Distance(marker.transform.position, point))
             .First();
     }
 }

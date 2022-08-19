@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef846104cd8846e4afe1f0ce9ac44f22, type: 3}
+  m_Name: RoadVisualizerSettings
+  m_EditorClassIdentifier: 
+  roads:
+    straight: {fileID: 852569794182527358, guid: 7ea76dafa4a45e24ebf1a903d46a71d8, type: 3}
+    deadEnd: {fileID: 4660038116378453182, guid: 49fb7c98c47104c50b47e680fec2d753, type: 3}
+    corner: {fileID: 4047801430132471185, guid: 1f03fa529408ba54e8ed4e09e6384e1d, type: 3}
+    threeWay: {fileID: 8843177985090392801, guid: 8ad24528dfdb2864799c18c0da5ddd1f, type: 3}
+    fourWay: {fileID: 1201719623517833697, guid: b98ec73d282e08c418631cf2e53cbe97, type: 3}
+  house: {fileID: 714356044909468182, guid: 79f37c596e80240e1a3ce3e7d4d889f8, type: 3}
+  grass: {fileID: 1691805843578977363, guid: 2abc1d527e0ae4012a27210fc1cde506, type: 3}
+  car: {fileID: 8176937819598881287, guid: 1b5dbcc17f0244bccbec908a1cee5ef1, type: 3}

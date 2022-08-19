@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CarAiDirector
 {
-    AdjacencyGraph<Vector2Int> _roadGraph;
-    Dictionary<Vector2Int, Road> _roadMap;
+    readonly AdjacencyGraph<Vector2Int> _roadGraph;
+    readonly Dictionary<Vector2Int, Road> _roadMap;
 
     public CarAiDirector(AdjacencyGraph<Vector2Int> roadGraph, Dictionary<Vector2Int, Road> roadMap)
     {
@@ -21,23 +21,25 @@ public class CarAiDirector
 
     List<Vector2> GetPath(Vector2 start, Vector2 end)
     {
+        D.Log("GetPath", start, end);
         var intStart = Vector2Int.RoundToInt(start);
         var intEnd = Vector2Int.RoundToInt(end);
 
         var roadPath = _roadGraph.Dijkstra(intStart, intEnd);
 
-        var path = new List<Vector2>();
+        var startMarker = _roadMap[roadPath[0]].FindEntranceNearestToPoint(start);
+        var path = new List<Marker> { startMarker, };
 
-        var road = _roadMap[roadPath[0]];
-        var nextRoad = _roadMap[roadPath[1]];
-        var direction = roadPath[1] - roadPath[0];
-
-        var currentPoint = Vector2.zero;
-        for (var i = 0; i < roadPath.Count; ++i)
+        for (var i = 0; i < roadPath.Count - 1; ++i)
         {
-            // var nextRoad = roadPath[1];
+            var road = _roadMap[roadPath[i]];
+            var roadMarkerPath = road.FindPathToNextRoad(
+                path[^1].transform.position,
+                roadPath[i + 1]
+            );
+            path.AddRange(roadMarkerPath);
         }
 
-        return path;
+        return path.Select(marker => (Vector2)marker.transform.position).ToList();
     }
 }

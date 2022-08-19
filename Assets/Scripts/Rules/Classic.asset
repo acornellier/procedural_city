@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d1362f225154d9bbfc564df28db1888, type: 3}
   m_Name: Classic
   m_EditorClassIdentifier: 
-  _letter: F
-  _results:
-  - '[+F][-F]'
-  - '[+F]F[-F]'
+  letter: F
+  results:
+  - '[-F][+F]'
   - '[-F]F[+F]'
+  - '[+F]F[-F]'

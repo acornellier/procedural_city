@@ -49,12 +49,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1458723244e44f82b98517be852fffe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxSpeed: 0.5
-  _accelerationFactor: 1
-  _turnFactor: 50
-  _driftFactor: 0.5
-  _accelerationInput: 0
-  _turnInput: 0
+  maxSpeed: 0.5
+  accelerationFactor: 1
+  turnFactor: 50
+  driftFactor: 0.5
+  accelerationInput: 0
+  turnInput: 0
 --- !u!114 &8176937819598881287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,14 +67,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5186765817d64f669e1a7c2450090f09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _carController: {fileID: 5766086568317784001}
-  _arriveDistance: 0.2
-  _lastPointArriveDistance: 0.1
-  _steeringStrength: 45
-  _steeringEpsilon: 1
-  _path: []
-  _pathIndex: 0
-  _stopped: 0
+  carController: {fileID: 5766086568317784001}
+  arriveDistance: 0.3
+  lastPointArriveDistance: 0.1
+  steeringStrength: 45
+  steeringEpsilon: 5
+  path: []
+  pathIndex: 0
+  stopped: 0
 --- !u!212 &1372173101717435906
 SpriteRenderer:
   m_ObjectHideFlags: 0

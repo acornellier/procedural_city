@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,6 +49,11 @@ public class CarAi : MonoBehaviour
     void GetNewPath()
     {
         path = _director.GetRandomPath(transform.position);
+        if (path.Count == 0)
+        {
+            stopped = true;
+            return;
+        }
 
         transform.position = path[0];
         var relativePoint = transform.InverseTransformPoint(path[1]);

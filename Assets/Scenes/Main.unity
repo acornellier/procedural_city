@@ -383,10 +383,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc1339ecda9543fea64f897ad68f64ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lSystem: {fileID: 0}
-  _lengths: {x: 1, y: 3}
-  _prefab: {fileID: 0}
-  _lineMaterial: {fileID: 0}
+  lSystem: {fileID: 0}
+  lengths: {x: 1, y: 3}
+  prefab: {fileID: 0}
+  lineMaterial: {fileID: 0}
 --- !u!4 &936126517
 Transform:
   m_ObjectHideFlags: 0
@@ -414,12 +414,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 581e67ad10d141778ff017cc7500feba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rules:
+  rules:
   - {fileID: 11400000, guid: 21f628e5550346340a012c644df43dc3, type: 2}
-  _rootSentence: '[F]--F'
-  _iterationLimit: 5
-  _chanceToIgnoreRule: 0.29
-  _maxTotalLength: 10000
+  rootSentence: '[F]--F'
+  iterationLimit: 5
+  chanceToIgnoreRule: 0
+  maxTotalLength: 10000
 --- !u!114 &936126519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,14 +432,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 173c4550b78f4b16b3e8baaae70f81c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lSystem: {fileID: 936126518}
-  _lengths: {x: 1, y: 3}
-  _roads:
-    _straight: {fileID: 852569794182527358, guid: 7ea76dafa4a45e24ebf1a903d46a71d8, type: 3}
-    _deadEnd: {fileID: 4660038116378453182, guid: 49fb7c98c47104c50b47e680fec2d753, type: 3}
-    _corner: {fileID: 4047801430132471185, guid: 1f03fa529408ba54e8ed4e09e6384e1d, type: 3}
-    _threeWay: {fileID: 8843177985090392801, guid: 8ad24528dfdb2864799c18c0da5ddd1f, type: 3}
-    _fourWay: {fileID: 1201719623517833697, guid: b98ec73d282e08c418631cf2e53cbe97, type: 3}
-  _house: {fileID: 714356044909468182, guid: 79f37c596e80240e1a3ce3e7d4d889f8, type: 3}
-  _grass: {fileID: 1691805843578977363, guid: 2abc1d527e0ae4012a27210fc1cde506, type: 3}
-  _car: {fileID: 8176937819598881287, guid: 1b5dbcc17f0244bccbec908a1cee5ef1, type: 3}
+  lSystem: {fileID: 936126518}
+  lengths: {x: 1, y: 3}
+  settings: {fileID: 11400000, guid: d97a3b9be2a6b2d4194c58c676a89a1f, type: 2}
