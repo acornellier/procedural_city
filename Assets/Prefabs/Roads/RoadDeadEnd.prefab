@@ -44,8 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431de1d0a4034ab58aa00ba3efb4a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openForConnections: 1
-  _neighbors: []
+  neighbors:
+  - {fileID: 6366923384957538588}
+  isEntrance: 1
 --- !u!1 &4744893746174148373
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,8 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431de1d0a4034ab58aa00ba3efb4a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openForConnections: 0
-  _neighbors: []
+  neighbors: []
+  isEntrance: 0
 --- !u!1001 &7527560888470548359
 PrefabInstance:
   m_ObjectHideFlags: 0

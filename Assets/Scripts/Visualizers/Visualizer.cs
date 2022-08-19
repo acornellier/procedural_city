@@ -2,12 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public abstract class Visualizer : MonoBehaviour
 {
-    [SerializeField] LSystemGenerator _lSystem;
-    [SerializeField] Vector2Int _lengths = new(1, 3);
+    [FormerlySerializedAs("_lSystem")]
+    [SerializeField]
+    LSystemGenerator lSystem;
+
+    [FormerlySerializedAs("_lengths")]
+    [SerializeField]
+    Vector2Int lengths = new(1, 3);
 
     [NonSerialized] public int seed;
 
@@ -24,7 +30,7 @@ public abstract class Visualizer : MonoBehaviour
         city = new GameObject("City");
         roadNetwork.Clear();
 
-        var sequence = _lSystem.GenerateSentence();
+        var sequence = lSystem.GenerateSentence();
 
         var savePoints = new Stack<AgentParameters>();
         var currentPosition = Vector2Int.zero;
@@ -51,7 +57,7 @@ public abstract class Visualizer : MonoBehaviour
                     break;
                 case EncodingLetters.Draw:
                 case EncodingLetters.DrawLong:
-                    length = Random.Range(_lengths.x, _lengths.y);
+                    length = Random.Range(lengths.x, lengths.y);
                     if (encoding == EncodingLetters.DrawLong) length *= 4;
 
                     for (var i = 0; i < length; ++i)

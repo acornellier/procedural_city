@@ -442,3 +442,4 @@ MonoBehaviour:
     _fourWay: {fileID: 1201719623517833697, guid: b98ec73d282e08c418631cf2e53cbe97, type: 3}
   _house: {fileID: 714356044909468182, guid: 79f37c596e80240e1a3ce3e7d4d889f8, type: 3}
   _grass: {fileID: 1691805843578977363, guid: 2abc1d527e0ae4012a27210fc1cde506, type: 3}
+  _car: {fileID: 8176937819598881287, guid: 1b5dbcc17f0244bccbec908a1cee5ef1, type: 3}

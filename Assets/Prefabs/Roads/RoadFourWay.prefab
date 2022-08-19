@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431de1d0a4034ab58aa00ba3efb4a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openForConnections: 0
-  _neighbors: []
+  neighbors: []
+  isEntrance: 0
 --- !u!1 &128912255725162734
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,11 +90,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431de1d0a4034ab58aa00ba3efb4a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openForConnections: 0
-  _neighbors:
+  neighbors:
   - {fileID: 1865594532103138459}
   - {fileID: 3241754498368932677}
   - {fileID: 2934512743786008192}
+  isEntrance: 0
 --- !u!1 &1223120341577270200
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,8 +139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431de1d0a4034ab58aa00ba3efb4a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openForConnections: 0
-  _neighbors: []
+  neighbors: []
+  isEntrance: 0
 --- !u!1 &1561398416551898465
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,9 +185,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431de1d0a4034ab58aa00ba3efb4a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openForConnections: 1
-  _neighbors:
+  neighbors:
   - {fileID: 7536123308394484915}
+  isEntrance: 1
 --- !u!1 &1757543306419653414
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,11 +232,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431de1d0a4034ab58aa00ba3efb4a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openForConnections: 0
-  _neighbors:
-  - {fileID: 2968108471416503769}
+  neighbors:
   - {fileID: 7536123308394484915}
   - {fileID: 6227255377099930566}
+  - {fileID: 2968108471416503769}
+  isEntrance: 0
 --- !u!1 &1778684736845239958
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,8 +281,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431de1d0a4034ab58aa00ba3efb4a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openForConnections: 0
-  _neighbors: []
+  neighbors: []
+  isEntrance: 0
 --- !u!1 &4910518363340317611
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,11 +327,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431de1d0a4034ab58aa00ba3efb4a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openForConnections: 0
-  _neighbors:
+  neighbors:
+  - {fileID: 7536123308394484915}
   - {fileID: 2934512743786008192}
   - {fileID: 6476537321003506086}
-  - {fileID: 7536123308394484915}
+  isEntrance: 0
 --- !u!1 &5722717070947556243
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,8 +376,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431de1d0a4034ab58aa00ba3efb4a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openForConnections: 0
-  _neighbors: []
+  neighbors: []
+  isEntrance: 0
 --- !u!1 &5761375717597744564
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,11 +422,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431de1d0a4034ab58aa00ba3efb4a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openForConnections: 0
-  _neighbors:
+  neighbors:
   - {fileID: 6227255377099930566}
-  - {fileID: 8181852314970415861}
   - {fileID: 3241754498368932677}
+  - {fileID: 8181852314970415861}
+  isEntrance: 0
 --- !u!1 &6514115106318108771
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,9 +471,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431de1d0a4034ab58aa00ba3efb4a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openForConnections: 1
-  _neighbors:
+  neighbors:
   - {fileID: 3241754498368932677}
+  isEntrance: 1
 --- !u!1 &7547219865783611147
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,9 +518,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431de1d0a4034ab58aa00ba3efb4a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openForConnections: 1
-  _neighbors:
+  neighbors:
   - {fileID: 6227255377099930566}
+  isEntrance: 1
 --- !u!1 &8851041228963874300
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,9 +565,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431de1d0a4034ab58aa00ba3efb4a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openForConnections: 1
-  _neighbors:
+  neighbors:
   - {fileID: 2934512743786008192}
+  isEntrance: 1
 --- !u!1001 &4067277016700289752
 PrefabInstance:
   m_ObjectHideFlags: 0

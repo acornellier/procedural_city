@@ -1,34 +1,51 @@
 ﻿using System.Text;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class LSystemGenerator : MonoBehaviour
 {
-    [SerializeField] Rule[] _rules;
-    [SerializeField] string _rootSentence;
-    [SerializeField] [Range(0, 50)] int _iterationLimit;
-    [SerializeField] [Range(0, 1)] float _chanceToIgnoreRule = 0.3f;
-    [SerializeField] int _maxTotalLength = 10000;
+    [FormerlySerializedAs("_rules")]
+    [SerializeField]
+    Rule[] rules;
+
+    [FormerlySerializedAs("_rootSentence")]
+    [SerializeField]
+    string rootSentence;
+
+    [FormerlySerializedAs("_iterationLimit")]
+    [SerializeField]
+    [Range(0, 50)]
+    int iterationLimit;
+
+    [FormerlySerializedAs("_chanceToIgnoreRule")]
+    [SerializeField]
+    [Range(0, 1)]
+    float chanceToIgnoreRule = 0.3f;
+
+    [FormerlySerializedAs("_maxTotalLength")]
+    [SerializeField]
+    int maxTotalLength = 10000;
 
     int _totalLength = 0;
 
     public string GenerateSentence(string word = null)
     {
         _totalLength = 0;
-        word ??= _rootSentence;
+        word ??= rootSentence;
 
         return GrowRecursive(word);
     }
 
     string GrowRecursive(string word, int iterationIndex = 0)
     {
-        if (iterationIndex >= _iterationLimit)
+        if (iterationIndex >= iterationLimit)
             return word;
 
         var newWord = new StringBuilder();
         foreach (var c in word)
         {
             _totalLength += 1;
-            if (_totalLength >= _maxTotalLength)
+            if (_totalLength >= maxTotalLength)
                 break;
 
             newWord.Append(c);
@@ -40,10 +57,11 @@ public class LSystemGenerator : MonoBehaviour
 
     void ProcessRulesRecursively(StringBuilder newWord, char c, int iterationIndex)
     {
-        foreach (var rule in _rules)
+        foreach (var rule in rules)
         {
-            if (rule._letter == c.ToString() &&
-                (_chanceToIgnoreRule == 0 || iterationIndex <= 1 || Random.value > _chanceToIgnoreRule))
+            if (rule.letter == c.ToString() &&
+                (chanceToIgnoreRule == 0 || iterationIndex <= 1 ||
+                 Random.value > chanceToIgnoreRule))
                 newWord.Append(GrowRecursive(rule.GetResult(), iterationIndex + 1));
         }
     }

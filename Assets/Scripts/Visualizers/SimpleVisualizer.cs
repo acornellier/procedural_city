@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class SimpleVisualizer : Visualizer
 {
-    [SerializeField] GameObject _prefab;
-    [SerializeField] Material _lineMaterial;
+    [FormerlySerializedAs("_prefab")]
+    [SerializeField]
+    GameObject prefab;
+
+    [FormerlySerializedAs("_lineMaterial")]
+    [SerializeField]
+    Material lineMaterial;
 
     public override void Visualize()
     {
@@ -25,9 +31,9 @@ public class SimpleVisualizer : Visualizer
     void DrawConnection(Vector2 startPosition, Vector2 endPosition)
     {
         var line = new GameObject("line")
-            { transform = { parent = city.transform, position = startPosition } };
+            { transform = { parent = city.transform, position = startPosition, }, };
         var lineRenderer = line.AddComponent<LineRenderer>();
-        lineRenderer.material = _lineMaterial;
+        lineRenderer.material = lineMaterial;
         lineRenderer.startColor = Color.red;
         lineRenderer.endColor = Color.red;
         lineRenderer.startWidth = 0.3f;
@@ -38,6 +44,6 @@ public class SimpleVisualizer : Visualizer
 
     void DrawPosition(Vector2 position)
     {
-        Instantiate(_prefab, position, Quaternion.identity, city.transform);
+        Instantiate(prefab, position, Quaternion.identity, city.transform);
     }
 }

@@ -6,10 +6,10 @@ using Random = UnityEngine.Random;
 
 public class RoadVisualizer : Visualizer
 {
-    [SerializeField] Roads _roads;
-    [SerializeField] GameObject _house;
-    [SerializeField] GameObject _grass;
-    [SerializeField] CarAi _car;
+    [SerializeField] Roads roads;
+    [SerializeField] GameObject house;
+    [SerializeField] GameObject grass;
+    [SerializeField] CarAi car;
 
     readonly Vector2Int[] _directions =
         { Vector2Int.up, Vector2Int.right, Vector2Int.left, Vector2Int.down, };
@@ -39,7 +39,7 @@ public class RoadVisualizer : Visualizer
         // DrawHouses(roadPositions);
 
         _carAiDirector = new CarAiDirector(roadNetwork, _roadMap);
-        var car = Instantiate(_car, Vector3.zero, Quaternion.identity, city.transform);
+        var car = Instantiate(this.car, Vector3.zero, Quaternion.identity, city.transform);
         car.SetDirector(_carAiDirector);
     }
 
@@ -60,7 +60,7 @@ public class RoadVisualizer : Visualizer
             for (var y = _bounds.yMin; y <= _bounds.yMax; ++y)
             {
                 var position = new Vector2Int(x, y);
-                var obj = Instantiate(_grass, (Vector2)position, Quaternion.identity, _grassParent);
+                var obj = Instantiate(grass, (Vector2)position, Quaternion.identity, _grassParent);
                 // _roadMap[position] = obj;
             }
         }
@@ -77,7 +77,7 @@ public class RoadVisualizer : Visualizer
 
             if (neighbors.Count == 4)
             {
-                DrawRoad(_roads._fourWay, point, 0, visited);
+                DrawRoad(roads.fourWay, point, 0, visited);
                 continue;
             }
 
@@ -102,17 +102,17 @@ public class RoadVisualizer : Visualizer
                     : right ? 90f
                     : up ? 180f
                     : 270f;
-                DrawRoad(_roads._deadEnd, point, angle, visited);
+                DrawRoad(roads.deadEnd, point, angle, visited);
             }
             else if (neighbors.Count == 2)
             {
                 if (down && up)
                 {
-                    DrawRoad(_roads._straight, point, 0, visited);
+                    DrawRoad(roads.straight, point, 0, visited);
                 }
                 else if (right && left)
                 {
-                    DrawRoad(_roads._straight, point, 90, visited);
+                    DrawRoad(roads.straight, point, 90, visited);
                 }
                 else // corner
                 {
@@ -120,7 +120,7 @@ public class RoadVisualizer : Visualizer
                         : right & up ? 90f
                         : up && left ? 180f
                         : 270f;
-                    DrawRoad(_roads._corner, point, angle, visited);
+                    DrawRoad(roads.corner, point, angle, visited);
                 }
             }
             else if (neighbors.Count == 3)
@@ -129,7 +129,7 @@ public class RoadVisualizer : Visualizer
                     : !down ? 90f
                     : !right ? 180f
                     : 270f;
-                DrawRoad(_roads._threeWay, point, angle, visited);
+                DrawRoad(roads.threeWay, point, angle, visited);
             }
         }
     }
@@ -166,7 +166,7 @@ public class RoadVisualizer : Visualizer
                 houses.Add(position);
                 var zAngle = -Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
                 var angle = Quaternion.Euler(0, 0, zAngle);
-                Instantiate(_house, (Vector2)position, angle, city.transform);
+                Instantiate(house, (Vector2)position, angle, city.transform);
             }
         }
     }
@@ -174,10 +174,10 @@ public class RoadVisualizer : Visualizer
     [Serializable]
     class Roads
     {
-        public Road _straight;
-        public Road _deadEnd;
-        public Road _corner;
-        public Road _threeWay;
-        public Road _fourWay;
+        public Road straight;
+        public Road deadEnd;
+        public Road corner;
+        public Road threeWay;
+        public Road fourWay;
     }
 }

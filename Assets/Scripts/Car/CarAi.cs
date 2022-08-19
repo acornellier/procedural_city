@@ -1,30 +1,29 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CarAi : MonoBehaviour
 {
-    [SerializeField] CarController _carController;
+    [SerializeField] CarController carController;
 
-    [SerializeField] float _arriveDistance = 0.3f;
-    [SerializeField] float _lastPointArriveDistance = 0.1f;
-    [SerializeField] float _steeringStrength = 45f;
-    [SerializeField] float _steeringEpsilon = 5f;
+    [SerializeField] float arriveDistance = 0.3f;
+    [SerializeField] float lastPointArriveDistance = 0.1f;
+    [SerializeField] float steeringStrength = 45f;
+    [SerializeField] float steeringEpsilon = 5f;
 
-    [SerializeField] List<Vector2> _path = new();
-    [ReadOnly] [SerializeField] int _pathIndex;
-    [ReadOnly] [SerializeField] bool _stopped;
+    [SerializeField] List<Vector2> path = new();
+    [ReadOnly] [SerializeField] int pathIndex;
+    [ReadOnly] [SerializeField] bool stopped;
 
     CarAiDirector _director;
 
     void Awake()
     {
-        _stopped = true;
+        stopped = true;
     }
 
     void Update()
     {
-        if (_stopped && _director != null) GetNewPath();
+        if (stopped && _director != null) GetNewPath();
 
         CheckIfArrived();
         Drive();
@@ -33,11 +32,11 @@ public class CarAi : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.magenta;
-        for (var i = 0; i < _path.Count; ++i)
+        for (var i = 0; i < path.Count; ++i)
         {
-            Gizmos.DrawSphere(_path[i], .05f);
-            if (i < _path.Count - 1)
-                Gizmos.DrawLine(_path[i], _path[i + 1]);
+            Gizmos.DrawSphere(path[i], .05f);
+            if (i < path.Count - 1)
+                Gizmos.DrawLine(path[i], path[i + 1]);
         }
     }
 
@@ -48,44 +47,50 @@ public class CarAi : MonoBehaviour
 
     void GetNewPath()
     {
-        _path = _director.GetRandomPath(transform.position);
-        _pathIndex = 0;
-        _stopped = false;
+        path = _director.GetRandomPath(transform.position);
+
+        transform.position = path[0];
+        var relativePoint = transform.InverseTransformPoint(path[1]);
+        var angle = Mathf.Atan2(relativePoint.x, relativePoint.z) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, angle, 0);
+
+        pathIndex = 1;
+        stopped = false;
     }
 
     void CheckIfArrived()
     {
-        if (_stopped) return;
+        if (stopped) return;
 
         var distanceToCheck =
-            _pathIndex == _path.Count - 1 ? _lastPointArriveDistance : _arriveDistance;
-        var distanceFromPoint = Vector2.Distance(transform.position, _path[_pathIndex]);
+            pathIndex == path.Count - 1 ? lastPointArriveDistance : arriveDistance;
+        var distanceFromPoint = Vector2.Distance(transform.position, path[pathIndex]);
         if (distanceFromPoint < distanceToCheck)
             SetNextTargetIndex();
     }
 
     void SetNextTargetIndex()
     {
-        ++_pathIndex;
-        if (_pathIndex < _path.Count) return;
+        ++pathIndex;
+        if (pathIndex < path.Count) return;
 
-        _stopped = true;
-        _path.Clear();
+        stopped = true;
+        path.Clear();
     }
 
     void Drive()
     {
-        if (_stopped)
+        if (stopped)
         {
-            _carController.SetInput(0, 0);
+            carController.SetInput(0, 0);
             return;
         }
 
-        var direction = (Vector3)_path[_pathIndex] - transform.position;
+        var direction = (Vector3)path[pathIndex] - transform.position;
         var angleDiff = Vector2.SignedAngle(transform.up, direction);
-        var turnInput = Mathf.Abs(angleDiff) < _steeringEpsilon
+        var turnInput = Mathf.Abs(angleDiff) < steeringEpsilon
             ? 0
-            : -angleDiff / _steeringStrength;
-        _carController.SetInput(turnInput, 1);
+            : -angleDiff / steeringStrength;
+        carController.SetInput(turnInput, 1);
     }
 }

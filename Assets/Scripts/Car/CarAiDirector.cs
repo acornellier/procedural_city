@@ -26,6 +26,18 @@ public class CarAiDirector
 
         var roadPath = _roadGraph.Dijkstra(intStart, intEnd);
 
-        return roadPath.Select(road => (Vector2)road).ToList();
+        var path = new List<Vector2>();
+
+        var road = _roadMap[roadPath[0]];
+        var nextRoad = _roadMap[roadPath[1]];
+        var direction = roadPath[1] - roadPath[0];
+
+        var currentPoint = Vector2.zero;
+        for (var i = 0; i < roadPath.Count; ++i)
+        {
+            // var nextRoad = roadPath[1];
+        }
+
+        return path;
     }
 }

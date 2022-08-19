@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Rule", menuName = "ProceduralCity/Rule", order = 0)]
 public class Rule : ScriptableObject
 {
-    public string _letter;
-    [SerializeField] string[] _results;
+    [FormerlySerializedAs("_letter")] public string letter;
+
+    [FormerlySerializedAs("_results")]
+    [SerializeField]
+    string[] results;
 
     public string GetResult()
     {
-        return _results[Random.Range(0, _results.Length)];
+        return results[Random.Range(0, results.Length)];
     }
 }

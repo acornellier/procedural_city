@@ -1,20 +1,39 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class CarController : MonoBehaviour
 {
-    [SerializeField] float _maxSpeed = 1;
-    [SerializeField] float _accelerationFactor = 1;
-    [SerializeField] float _turnFactor = 1;
-    [SerializeField] float _driftFactor = 1;
+    [FormerlySerializedAs("_maxSpeed")]
+    [SerializeField]
+    float maxSpeed = 1;
+
+    [FormerlySerializedAs("_accelerationFactor")]
+    [SerializeField]
+    float accelerationFactor = 1;
+
+    [FormerlySerializedAs("_turnFactor")]
+    [SerializeField]
+    float turnFactor = 1;
+
+    [FormerlySerializedAs("_driftFactor")]
+    [SerializeField]
+    float driftFactor = 1;
 
     Rigidbody2D _body;
 
     float _rotation;
 
-    [ReadOnly] [SerializeField] float _accelerationInput;
-    [ReadOnly] [SerializeField] float _turnInput;
+    [FormerlySerializedAs("_accelerationInput")]
+    [ReadOnly]
+    [SerializeField]
+    float accelerationInput;
+
+    [FormerlySerializedAs("_turnInput")]
+    [ReadOnly]
+    [SerializeField]
+    float turnInput;
 
     void Awake()
     {
@@ -30,26 +49,26 @@ public class CarController : MonoBehaviour
 
     public void SetInput(float turnInput, float accelerationInput)
     {
-        _turnInput = turnInput;
-        _accelerationInput = accelerationInput;
+        this.turnInput = turnInput;
+        this.accelerationInput = accelerationInput;
     }
 
     void ApplyAcceleration()
     {
-        if (_accelerationInput == 0 || _body.velocity.magnitude > _maxSpeed)
+        if (accelerationInput == 0 || _body.velocity.magnitude > maxSpeed)
             _body.drag = Mathf.Lerp(_body.drag, 3f, Time.fixedDeltaTime * 3f);
         else
             _body.drag = 0;
 
-        if (_body.velocity.magnitude < _maxSpeed)
-            _body.AddForce(_accelerationFactor * _accelerationInput * transform.up);
+        if (_body.velocity.magnitude < maxSpeed)
+            _body.AddForce(accelerationFactor * accelerationInput * transform.up);
     }
 
     void ApplySteering()
     {
         var minSpeed = Mathf.Clamp01(_body.velocity.magnitude / 8);
 
-        _rotation -= _turnFactor * _turnInput * minSpeed;
+        _rotation -= turnFactor * turnInput * minSpeed;
         _body.SetRotation(_rotation);
     }
 
@@ -58,6 +77,6 @@ public class CarController : MonoBehaviour
         var forwardVelocity = transform.up * Vector2.Dot(_body.velocity, transform.up);
         var rightVelocity = transform.right * Vector2.Dot(_body.velocity, transform.right);
 
-        _body.velocity = forwardVelocity + rightVelocity * _driftFactor;
+        _body.velocity = forwardVelocity + rightVelocity * driftFactor;
     }
 }
