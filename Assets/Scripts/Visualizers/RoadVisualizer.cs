@@ -16,7 +16,14 @@ public class RoadVisualizer : Visualizer
     BoundsInt _bounds;
     Transform _grassParent;
     Transform _roadParent;
+    Transform _carParent;
     Dictionary<Vector2Int, Road> _roadMap;
+
+    void Start()
+    {
+        Visualize();
+        SpawnCar();
+    }
 
     public override void Visualize()
     {
@@ -47,7 +54,7 @@ public class RoadVisualizer : Visualizer
                 settings.car,
                 (Vector2)position,
                 Quaternion.identity,
-                city.transform
+                _carParent
             );
             car.SetDirector(_carAiDirector);
         }
@@ -61,6 +68,8 @@ public class RoadVisualizer : Visualizer
         _grassParent.SetParent(city.transform);
         _roadParent = new GameObject("Roads").transform;
         _roadParent.SetParent(city.transform);
+        _carParent = new GameObject("Cars").transform;
+        _carParent.SetParent(city.transform);
     }
 
     void DrawGrass()

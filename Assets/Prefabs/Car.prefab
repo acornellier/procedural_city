@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carController: {fileID: 5766086568317784001}
-  arriveDistance: 0.3
+  arriveDistance: 0.2
   lastPointArriveDistance: 0.1
   steeringStrength: 45
   steeringEpsilon: 5

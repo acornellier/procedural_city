@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class CarAi : MonoBehaviour
@@ -32,12 +32,16 @@ public class CarAi : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.magenta;
+        if (Selection.activeGameObject != gameObject) return;
+
         for (var i = 0; i < path.Count; ++i)
         {
+            Gizmos.color = i == pathIndex ? Color.magenta : i < pathIndex ? Color.green : Color.red;
+
             Gizmos.DrawSphere(path[i], .05f);
-            if (i < path.Count - 1)
-                Gizmos.DrawLine(path[i], path[i + 1]);
+
+            if (i > 0)
+                Gizmos.DrawLine(path[i - 1], path[i]);
         }
     }
 
@@ -49,7 +53,7 @@ public class CarAi : MonoBehaviour
     void GetNewPath()
     {
         path = _director.GetRandomPath(transform.position);
-        if (path.Count == 0)
+        if (path.Count <= 1)
         {
             stopped = true;
             return;

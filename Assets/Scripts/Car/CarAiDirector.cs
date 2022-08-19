@@ -15,19 +15,23 @@ public class CarAiDirector
 
     public List<Vector2> GetRandomPath(Vector2 start)
     {
-        var end = _roadMap.Keys.ToList()[Random.Range(0, _roadMap.Count - 1)];
+        Vector2Int end;
+        do
+        {
+            end = _roadMap.Keys.ToList()[Random.Range(0, _roadMap.Count - 1)];
+        } while (start == end);
+
         return GetPath(start, end);
     }
 
     List<Vector2> GetPath(Vector2 start, Vector2 end)
     {
-        D.Log("GetPath", start, end);
         var intStart = Vector2Int.RoundToInt(start);
         var intEnd = Vector2Int.RoundToInt(end);
 
         var roadPath = _roadGraph.Dijkstra(intStart, intEnd);
 
-        var startMarker = _roadMap[roadPath[0]].FindEntranceNearestToPoint(start);
+        var startMarker = _roadMap[roadPath[0]].EntrancesNearestToPoint(start).First();
         var path = new List<Marker> { startMarker, };
 
         for (var i = 0; i < roadPath.Count - 1; ++i)

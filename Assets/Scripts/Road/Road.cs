@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class Road : MonoBehaviour
@@ -24,18 +26,29 @@ public class Road : MonoBehaviour
 
     public IEnumerable<Marker> FindPathToNextRoad(Vector2 start, Vector2Int nextRoadPosition)
     {
-        var entranceMarker = FindEntranceNearestToPoint(start);
         var exitMarker = FindExitNearestToPoint(nextRoadPosition);
-        D.Log("Dijkstra", gameObject.name, entranceMarker, exitMarker);
-        return _adjacencyGraph.Dijkstra(entranceMarker, exitMarker);
+
+        var entranceMarkers = EntrancesNearestToPoint(start);
+
+        foreach (var entranceMarker in entranceMarkers)
+        {
+            if (entranceMarker && !entranceMarker.Neighbors.Any()) return new[] { entranceMarker, };
+
+            var path = _adjacencyGraph.Dijkstra(entranceMarker, exitMarker);
+            if (path.Count > 0)
+                return path;
+        }
+
+        throw new Exception($"No path found from {start} to {nextRoadPosition}");
     }
 
-    public Marker FindEntranceNearestToPoint(Vector2 point)
+    [ItemCanBeNull]
+    public List<Marker> EntrancesNearestToPoint(Vector2 point)
     {
         return _carMarkers
             .Where(marker => marker.isEntrance)
             .OrderBy(marker => Vector2.Distance(marker.transform.position, point))
-            .First();
+            .ToList();
     }
 
     Marker FindExitNearestToPoint(Vector2 point)

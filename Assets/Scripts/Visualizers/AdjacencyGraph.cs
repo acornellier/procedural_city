@@ -32,6 +32,8 @@ public class AdjacencyGraph<T>
 
     public List<T> Dijkstra(T start, T end)
     {
+        if (start.Equals(end)) return new List<T> { start, };
+
         var distances = new Dictionary<T, float>();
         var cameFrom = new Dictionary<T, T>();
         var visited = new HashSet<T>();
@@ -61,17 +63,16 @@ public class AdjacencyGraph<T>
             }
         }
 
-        throw new Exception($"No path found between {start} and {end}");
+        return new List<T>();
     }
 
     static List<T> GeneratePath(IReadOnlyDictionary<T, T> cameFrom, T endState)
     {
-        var path = new List<T>();
+        var path = new List<T> { endState, };
         var parent = endState;
-        while (parent != null && cameFrom.ContainsKey(parent))
+        while (cameFrom.TryGetValue(parent, out parent))
         {
             path.Add(parent);
-            parent = cameFrom[parent];
         }
 
         path.Reverse();
